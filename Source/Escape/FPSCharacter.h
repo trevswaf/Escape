@@ -29,4 +29,10 @@ public:
 	UFUNCTION()
 	void MoveRight(float val);
 
+	UFUNCTION()
+	void OnStartJump();
+
+	UFUNCTION()
+	void OnEndJump();
+
 };
