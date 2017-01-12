@@ -5,11 +5,15 @@
 
 
 // Sets default values
-AFPSCharacter::AFPSCharacter()
+AFPSCharacter::AFPSCharacter(const FObjectInitializer& ObjectInitializer)
+	:Super(ObjectInitializer)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	FirstPersonCamera = ObjectInitializer.CreateDefaultSubobject<UCameraComponent>(this, TEXT("FirstPersonCamera"));
+	FirstPersonCamera->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+	FirstPersonCamera->RelativeLocation = FVector(0, 0, 50.0f + BaseEyeHeight);
+	FirstPersonCamera->bUsePawnControlRotation = true;
 }
 
 // Called when the game starts or when spawned
@@ -36,6 +40,7 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("LookUp", this, &AFPSCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AFPSCharacter::OnStartJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AFPSCharacter::OnEndJump);
+	PlayerInputComponent->BindAction("Shoot", IE_Released, this, &AFPSCharacter::Shoot);
 }
 
 //Called by player input to add forward motion to character
@@ -74,4 +79,18 @@ void AFPSCharacter::OnStartJump()
 void AFPSCharacter::OnEndJump()
 {
 	bPressedJump = false;
+}
+
+void AFPSCharacter::Shoot()
+{
+	FHitResult* Hit = new FHitResult();
+	FVector StartTrace = FirstPersonCamera->GetComponentLocation();
+	FVector DirectionVector = FirstPersonCamera->GetForwardVector();
+	FVector EndTrace = (DirectionVector * 1000) + StartTrace; //TODO: replace literal 1000 with range number depending on how long trigger was held
+	FCollisionQueryParams* CQP = new FCollisionQueryParams();
+
+	if (GetWorld()->LineTraceSingleByChannel(*Hit, StartTrace, EndTrace, ECC_Visibility, *CQP))
+	{
+		DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red, true);
+	}
 }
