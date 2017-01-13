@@ -28,6 +28,12 @@ void AFPSCharacter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	//Tick Event that increments ChargeTime. Set true by ChargeShoot, and set false by Shoot.
+	if (bIncrementCharge)
+	{
+		ChargeTime += DeltaTime;
+	}
+
 }
 
 // Called to bind functionality to input
@@ -40,6 +46,7 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("LookUp", this, &AFPSCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AFPSCharacter::OnStartJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AFPSCharacter::OnEndJump);
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AFPSCharacter::ChargeShoot);
 	PlayerInputComponent->BindAction("Shoot", IE_Released, this, &AFPSCharacter::Shoot);
 }
 
@@ -81,8 +88,16 @@ void AFPSCharacter::OnEndJump()
 	bPressedJump = false;
 }
 
+void AFPSCharacter::ChargeShoot()
+{
+	bIncrementCharge = true;
+}
+
 void AFPSCharacter::Shoot()
 {
+
+	bIncrementCharge = false;
+
 	FHitResult* Hit = new FHitResult();
 	FVector StartTrace = FirstPersonCamera->GetComponentLocation();
 	FVector DirectionVector = FirstPersonCamera->GetForwardVector();
@@ -93,4 +108,9 @@ void AFPSCharacter::Shoot()
 	{
 		DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red, true);
 	}
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow,FString::SanitizeFloat(ChargeTime)); //Prototyping held Shoot button TODO turn this into a set of arguments for shot range + power
+
+	ChargeTime = 0.0f;
+
 }

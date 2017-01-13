@@ -43,6 +43,19 @@ public:
 	UFUNCTION()
 	void OnEndJump();
 
+	//Called to flag bIncrementCharge in tick, increments ChargeTime, which will be passed into Shoot to determine shot parameters
+	UFUNCTION()
+	void ChargeShoot();
+
+	//Called to unflag bIncrementCharge, and take the results of ChargeTime, process them, and trace with those parameters to check for hit
 	UFUNCTION()
 	void Shoot();
+
+private:
+
+	//amount of time shoot button has been held. used to get parameters for shot range/strength
+	float ChargeTime = 0.0f;
+
+	//flag variable that controls whether to increment charge in tick. set true in ChargeShoot (on shoot pressed) , set false in Shoot (on shoot released)
+	bool bIncrementCharge = false;
 };
