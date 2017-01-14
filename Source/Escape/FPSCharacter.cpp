@@ -96,14 +96,37 @@ void AFPSCharacter::ChargeShoot()
 void AFPSCharacter::Shoot()
 {
 
+	//flag variable to stop incrementing ChargeShoot in tick
 	bIncrementCharge = false;
 
+	//Comparator using the ChargeTime to determine what type of shot
+	if (ChargeTime <= LowPowerShot)
+	{
+		ShotRange = 1000;
+		ShotPower = 20;
+		ShotCooldown = .15f;
+	}
+	else if (ChargeTime <= HighPowerShot)
+	{
+		ShotRange = 1500;
+		ShotPower = 50;
+		ShotCooldown = 0.3f;
+	}
+	else
+	{
+		ShotRange = 2000;
+		ShotPower = 100;
+		ShotCooldown = 0.5f;
+	}
+
+	//Setting up trace variables
 	FHitResult* Hit = new FHitResult();
 	FVector StartTrace = FirstPersonCamera->GetComponentLocation();
 	FVector DirectionVector = FirstPersonCamera->GetForwardVector();
-	FVector EndTrace = (DirectionVector * 1000) + StartTrace; //TODO: replace literal 1000 with range number depending on how long trigger was held
+	FVector EndTrace = (DirectionVector * ShotRange) + StartTrace;
 	FCollisionQueryParams* CQP = new FCollisionQueryParams();
 
+	//Do trace and draw debug if successful hit returned
 	if (GetWorld()->LineTraceSingleByChannel(*Hit, StartTrace, EndTrace, ECC_Visibility, *CQP))
 	{
 		DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red, true);
@@ -111,6 +134,8 @@ void AFPSCharacter::Shoot()
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow,FString::SanitizeFloat(ChargeTime)); //Prototyping held Shoot button TODO turn this into a set of arguments for shot range + power
 
+	//Reset ChargeTime
 	ChargeTime = 0.0f;
 
+	//TODO: flag bCanShoot and register Timer to reset the flag based on ShotCooldown
 }

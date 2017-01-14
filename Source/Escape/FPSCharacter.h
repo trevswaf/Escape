@@ -15,6 +15,16 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	UCameraComponent* FirstPersonCamera;
 
+	//threshhold for a low power shot
+	UPROPERTY(EditAnywhere, Category = Shooting)
+	float LowPowerShot = 0.2f;
+
+	// So this means medium power shot lies between .2 and 1 seconds held.
+
+	//threshhold for a high power shot
+	UPROPERTY(EditAnywhere, Category = Shooting)
+	float HighPowerShot = 1.0f;
+
 	// Sets default values for this character's properties
 	AFPSCharacter(const FObjectInitializer& ObjectInitializer);
 
@@ -58,4 +68,17 @@ private:
 
 	//flag variable that controls whether to increment charge in tick. set true in ChargeShoot (on shoot pressed) , set false in Shoot (on shoot released)
 	bool bIncrementCharge = false;
+
+	//range of shot - determined by ChargeTime
+	float ShotRange;
+
+	//power of shot - determined by ChargeTime
+	float ShotPower;
+
+	//power of shot - determined by type of shot fired
+	float ShotCooldown;
+
+	//flag that determines if player can shoot or if gun is on cooldown
+	bool bCanShoot = true;
+
 };
