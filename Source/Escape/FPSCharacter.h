@@ -61,6 +61,9 @@ public:
 	UFUNCTION()
 	void Shoot();
 
+	UFUNCTION()
+	void ResetShootCooldown();
+
 private:
 
 	//amount of time shoot button has been held. used to get parameters for shot range/strength
@@ -80,5 +83,8 @@ private:
 
 	//flag that determines if player can shoot or if gun is on cooldown
 	bool bCanShoot = true;
+
+	//flag that determines if player is sprinting
+	bool bIsSprinting = false;
 
 };

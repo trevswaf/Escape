@@ -14,6 +14,9 @@ AFPSCharacter::AFPSCharacter(const FObjectInitializer& ObjectInitializer)
 	FirstPersonCamera->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 	FirstPersonCamera->RelativeLocation = FVector(0, 0, 50.0f + BaseEyeHeight);
 	FirstPersonCamera->bUsePawnControlRotation = true;
+
+	UCharacterMovementComponent* CharMovement = GetCharacterMovement();
+	CharMovement->MaxWalkSpeed = 300;
 }
 
 // Called when the game starts or when spawned
@@ -90,11 +93,21 @@ void AFPSCharacter::OnEndJump()
 
 void AFPSCharacter::ChargeShoot()
 {
-	bIncrementCharge = true;
+	if (bCanShoot && !bIsSprinting)
+	{
+		bIncrementCharge = true;
+	}
 }
 
 void AFPSCharacter::Shoot()
 {
+
+	//If player cant shoot (is on cooldown) or is sprinting, they cant fire. Return.
+	if (!bCanShoot || bIsSprinting)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("cant shoot"));
+		return;
+	}
 
 	//flag variable to stop incrementing ChargeShoot in tick
 	bIncrementCharge = false;
@@ -104,19 +117,19 @@ void AFPSCharacter::Shoot()
 	{
 		ShotRange = 1000;
 		ShotPower = 20;
-		ShotCooldown = .15f;
+		ShotCooldown = .15f; //.15
 	}
 	else if (ChargeTime <= HighPowerShot)
 	{
 		ShotRange = 1500;
 		ShotPower = 50;
-		ShotCooldown = 0.3f;
+		ShotCooldown = .3f; //.3
 	}
 	else
 	{
 		ShotRange = 2000;
 		ShotPower = 100;
-		ShotCooldown = 0.5f;
+		ShotCooldown = .5f; //.5
 	}
 
 	//Setting up trace variables
@@ -132,10 +145,19 @@ void AFPSCharacter::Shoot()
 		DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red, true);
 	}
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow,FString::SanitizeFloat(ChargeTime)); //Prototyping held Shoot button TODO turn this into a set of arguments for shot range + power
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow,FString::SanitizeFloat(ChargeTime));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::FromInt(bCanShoot));//Prototyping held Shoot button TODO turn this into a set of arguments for shot range + power
 
 	//Reset ChargeTime
 	ChargeTime = 0.0f;
 
-	//TODO: flag bCanShoot and register Timer to reset the flag based on ShotCooldown
+	//flag bCanShoot and register Timer to reset the flag based on ShotCooldown
+	bCanShoot = false;
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AFPSCharacter::ResetShootCooldown, ShotCooldown, false);
+}
+
+void AFPSCharacter::ResetShootCooldown()
+{
+	bCanShoot = true;
 }
