@@ -16,7 +16,7 @@ AFPSCharacter::AFPSCharacter(const FObjectInitializer& ObjectInitializer)
 	FirstPersonCamera->bUsePawnControlRotation = true;
 
 	UCharacterMovementComponent* CharMovement = GetCharacterMovement();
-	CharMovement->MaxWalkSpeed = 300;
+	CharMovement->MaxWalkSpeed = 250;
 }
 
 // Called when the game starts or when spawned
@@ -51,6 +51,8 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AFPSCharacter::OnEndJump);
 	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AFPSCharacter::ChargeShoot);
 	PlayerInputComponent->BindAction("Shoot", IE_Released, this, &AFPSCharacter::Shoot);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFPSCharacter::SetSprintSpeed);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AFPSCharacter::SetWalkSpeed);
 }
 
 //Called by player input to add forward motion to character
@@ -160,4 +162,18 @@ void AFPSCharacter::Shoot()
 void AFPSCharacter::ResetShootCooldown()
 {
 	bCanShoot = true;
+}
+
+void AFPSCharacter::SetWalkSpeed()
+{
+	UCharacterMovementComponent* tmp = GetCharacterMovement();
+	tmp->MaxWalkSpeed = 250;
+	bIsSprinting = false;
+}
+
+void AFPSCharacter::SetSprintSpeed()
+{
+	UCharacterMovementComponent* tmp = GetCharacterMovement();
+	tmp->MaxWalkSpeed = 375;
+	bIsSprinting = true;
 }

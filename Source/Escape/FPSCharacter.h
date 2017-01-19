@@ -64,6 +64,12 @@ public:
 	UFUNCTION()
 	void ResetShootCooldown();
 
+	UFUNCTION()
+	void SetWalkSpeed();
+
+	UFUNCTION()
+	void SetSprintSpeed();
+
 private:
 
 	//amount of time shoot button has been held. used to get parameters for shot range/strength
