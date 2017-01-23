@@ -15,7 +15,6 @@ AAndroidCharacter::AAndroidCharacter()
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
 
 	PawnSensingComponent->SetPeripheralVisionAngle(90.f);
-
 }
 
 // Called when the game starts or when spawned
@@ -27,6 +26,27 @@ void AAndroidCharacter::BeginPlay()
 	{
 		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AAndroidCharacter::OnSeePlayer);
 	}
+
+	AAndroidController* AndroidController = Cast<AAndroidController>(GetController());
+
+	if (AndroidController)
+	{
+		AndroidController->SetDefaultLocation(DefaultLocation->GetActorLocation());
+	}
+}
+
+void AAndroidCharacter::Tick(float DeltaSeconds)
+{
+	if ((GetWorld()->GetTimeSeconds() - SeenThreshhold) > LastSeenTime && bSeenPlayer)
+	{
+		AAndroidController* Controller = Cast<AAndroidController>(GetController());
+		if (Controller)
+		{
+			bSeenPlayer = false;
+			GLog->Log("Sight Lost");
+			Controller->SetSeenTarget(nullptr);
+		}
+	}
 }
 
 void AAndroidCharacter::OnSeePlayer(APawn* Pawn)
@@ -36,6 +56,8 @@ void AAndroidCharacter::OnSeePlayer(APawn* Pawn)
 	if (AndroidController)
 	{
 		GLog->Log("I see you");
+		bSeenPlayer = true;
+		LastSeenTime = GetWorld()->GetTimeSeconds();
 		AndroidController->SetSeenTarget(Pawn);
 	}
 }

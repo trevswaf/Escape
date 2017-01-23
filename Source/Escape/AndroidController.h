@@ -20,9 +20,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	FName BlackboardKey = "Target";
 
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	FName LocationKey = "DefaultLocation";
+
 	virtual void Possess(APawn* Pawn) override;
 
 	void SetSeenTarget(APawn* Pawn);
+
+	void SetDefaultLocation(FVector Location);
+
 
 private:
 

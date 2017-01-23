@@ -16,6 +16,11 @@ public:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaSeconds) override;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+	AActor* DefaultLocation;
 	
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	class UPawnSensingComponent* PawnSensingComponent;
@@ -23,9 +28,21 @@ public:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	class UBehaviorTree* BehaviorTree;
 
+	//time that clears player was sensed. MUST BE LARGER THAN SENSE INTERVAL
+	UPROPERTY (EditDefaultsOnly, Category = "AI")
+	float SeenThreshhold = 1.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float Health = 100;
+
 private:
 
 	UFUNCTION()
 	void OnSeePlayer(APawn* Pawn);
+
+	//used to track when player was last sensed
+	float LastSeenTime;
+	
+	bool bSeenPlayer = false;
 
 };

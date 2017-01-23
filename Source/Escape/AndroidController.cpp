@@ -33,7 +33,15 @@ void AAndroidController::SetSeenTarget(APawn* Pawn)
 {
 	if (BlackboardComp)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red,(TEXT("%s"), Pawn->GetName()));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red,(TEXT("%s"), Pawn->GetName()));
 		BlackboardComp->SetValueAsObject(BlackboardKey, Pawn);
+	}
+}
+
+void AAndroidController::SetDefaultLocation(FVector Location)
+{
+	if (BlackboardComp)
+	{
+		BlackboardComp->SetValueAsVector(LocationKey, Location);
 	}
 }
