@@ -49,6 +49,18 @@ void AAndroidCharacter::Tick(float DeltaSeconds)
 	}
 }
 
+float AAndroidCharacter::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+	Health -= DamageAmount;
+
+	if (Health <= 0)
+	{
+		SetLifeSpan(.1f);
+	}
+
+	return DamageAmount;
+}
+
 void AAndroidCharacter::OnSeePlayer(APawn* Pawn)
 {
 	AAndroidController* AndroidController = Cast<AAndroidController>(GetController());

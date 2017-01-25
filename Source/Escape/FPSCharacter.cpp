@@ -2,6 +2,7 @@
 
 #include "Escape.h"
 #include "FPSCharacter.h"
+#include "AndroidCharacter.h"
 
 
 // Sets default values
@@ -141,10 +142,20 @@ void AFPSCharacter::Shoot()
 	FVector EndTrace = (DirectionVector * ShotRange) + StartTrace;
 	FCollisionQueryParams* CQP = new FCollisionQueryParams();
 
-	//Do trace and draw debug if successful hit returned
+	//Do trace and check if we hit an android
 	if (GetWorld()->LineTraceSingleByChannel(*Hit, StartTrace, EndTrace, ECC_Visibility, *CQP))
 	{
-		DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red, true);
+
+		AAndroidCharacter* Android = Cast<AAndroidCharacter>(Hit->GetActor());
+
+		//if we did hit an android have them take damage
+		if (Android)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Hit Android"));
+
+			FDamageEvent DamageEvent;
+			Android->TakeDamage(ShotPower, DamageEvent, GetController(), this);
+		}
 	}
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow,FString::SanitizeFloat(ChargeTime));
