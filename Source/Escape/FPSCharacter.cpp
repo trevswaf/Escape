@@ -3,6 +3,7 @@
 #include "Escape.h"
 #include "FPSCharacter.h"
 #include "AndroidCharacter.h"
+#include "Usable.h"
 
 
 // Sets default values
@@ -32,6 +33,9 @@ void AFPSCharacter::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
+	//Set our current usable to a result from this trace function, if we don't find one this value will be null.
+	CurrentUsable = TraceForUsable();
+
 	//Tick Event that increments ChargeTime. Set true by ChargeShoot, and set false by Shoot.
 	if (bIncrementCharge)
 	{
@@ -54,6 +58,7 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Shoot", IE_Released, this, &AFPSCharacter::Shoot);
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFPSCharacter::SetSprintSpeed);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AFPSCharacter::SetWalkSpeed);
+	PlayerInputComponent->BindAction("Use", IE_Pressed, this, &AFPSCharacter::UseUsable);
 }
 
 //Called by player input to add forward motion to character
@@ -187,4 +192,43 @@ void AFPSCharacter::SetSprintSpeed()
 	UCharacterMovementComponent* tmp = GetCharacterMovement();
 	tmp->MaxWalkSpeed = 375;
 	bIsSprinting = true;
+}
+
+AUsable* AFPSCharacter::TraceForUsable()
+{
+	//Store the trace result here
+	FHitResult Hit;
+
+	//Trace logistic variables, where we start, where we end
+	FVector StartTrace = FirstPersonCamera->GetComponentLocation();
+	FVector Direction = FirstPersonCamera->GetForwardVector();
+	FVector EndTrace = StartTrace + (Direction * 100); /*Mgiht want to change this literal value to a variable*/
+
+	//Set up the sphere shape we wil use to trace
+	FCollisionShape TraceSphere;
+	TraceSphere.ShapeType = ECollisionShape::Sphere;
+	TraceSphere.SetSphere(300);
+
+	//Set up the channel we are looking for. Usables have their own custom channel, refer to DefaultEngine.ini, but its ECC_GameTraceChannel1
+	FCollisionObjectQueryParams COQP;
+	COQP.AddObjectTypesToQuery(ECC_GameTraceChannel1);
+
+	//Test our trace
+	if (GetWorld()->SweepSingleByObjectType(Hit, StartTrace, EndTrace, FQuat::FQuat(), COQP,
+		TraceSphere, FCollisionQueryParams::DefaultQueryParam))
+	{
+		//If you found a hit cast it to get it to the desired type
+		return Cast<AUsable>(Hit.GetActor());
+	}
+
+	//If you are here then you are fucked. Luckily we test to make sure it isn't null in UseUable
+	return nullptr;
+}
+
+void AFPSCharacter::UseUsable()
+{
+	if (CurrentUsable)
+	{
+		CurrentUsable->Use();
+	}
 }

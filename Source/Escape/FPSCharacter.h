@@ -25,6 +25,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = Shooting)
 	float HighPowerShot = 1.0f;
 
+	UPROPERTY()
+	AUsable* CurrentUsable;
+
 	// Sets default values for this character's properties
 	AFPSCharacter(const FObjectInitializer& ObjectInitializer);
 
@@ -69,6 +72,14 @@ public:
 
 	UFUNCTION()
 	void SetSprintSpeed();
+
+	//Called in Tick to sphere cast for a usable in front of us
+	UFUNCTION()
+	AUsable* TraceForUsable();
+
+	//If we have a current usable set, call it's use function
+	UFUNCTION()
+	void UseUsable();
 
 private:
 
