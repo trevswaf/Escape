@@ -21,10 +21,13 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 	//Overridable use function. Not called from this class, but called from Player activating it with input
-	UFUNCTION(BlueprintNativeEvent, Category = Default)
+	UFUNCTION(BlueprintNativeEvent, Category = Use)
 	void Use();
 
 	//Optional Mesh
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere, Category = Use)
+	FString Prompt = "Press F to Use";
 };

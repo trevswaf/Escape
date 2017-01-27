@@ -36,6 +36,15 @@ void AFPSCharacter::Tick( float DeltaTime )
 	//Set our current usable to a result from this trace function, if we don't find one this value will be null.
 	CurrentUsable = TraceForUsable();
 
+	if (CurrentUsable)
+	{
+		OnFoundUsable.Broadcast(CurrentUsable->Prompt);
+	}
+	else
+	{
+		OnFoundUsable.Broadcast(TEXT(""));
+	}
+
 	//Tick Event that increments ChargeTime. Set true by ChargeShoot, and set false by Shoot.
 	if (bIncrementCharge)
 	{
@@ -105,14 +114,20 @@ void AFPSCharacter::ChargeShoot()
 	{
 		bIncrementCharge = true;
 	}
+	else
+	{
+		ChargeTime = 0.0f;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("cant charge"));
+	}
 }
 
 void AFPSCharacter::Shoot()
 {
 
 	//If player cant shoot (is on cooldown) or is sprinting, they cant fire. Return.
-	if (!bCanShoot || bIsSprinting)
+	if (!bCanShoot || bIsSprinting || !bIncrementCharge)
 	{
+		ChargeTime = 0.0f;
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("cant shoot"));
 		return;
 	}

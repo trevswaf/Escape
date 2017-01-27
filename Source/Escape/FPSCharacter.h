@@ -5,6 +5,8 @@
 #include "GameFramework/Character.h"
 #include "FPSCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUseDelegate, FString, Prompt);
+
 UCLASS()
 class ESCAPE_API AFPSCharacter : public ACharacter
 {
@@ -27,6 +29,9 @@ public:
 
 	UPROPERTY()
 	AUsable* CurrentUsable;
+
+	UPROPERTY(BlueprintAssignable, Category = Use)
+	FUseDelegate OnFoundUsable;
 
 	// Sets default values for this character's properties
 	AFPSCharacter(const FObjectInitializer& ObjectInitializer);
