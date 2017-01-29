@@ -10,6 +10,12 @@ AEscapeGameModeBase::AEscapeGameModeBase(const class FObjectInitializer& ObjectI
 	DefaultPawnClass = AFPSCharacter::StaticClass();
 }
 
+void AEscapeGameModeBase::SetQuestStage(EQuestStage Stage)
+{
+	QuestStage = Stage;
+	OnQuestStageSet.Broadcast(Stage);
+}
+
 
 
 
