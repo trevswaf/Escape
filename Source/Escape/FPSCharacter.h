@@ -70,7 +70,7 @@ public:
 	UFUNCTION()
 	void Shoot();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = Shooting)
 	void ResetShootCooldown();
 
 	UFUNCTION()
@@ -104,8 +104,9 @@ private:
 	//power of shot - determined by type of shot fired
 	float ShotCooldown;
 
-	//flag that determines if player can shoot or if gun is on cooldown
-	bool bCanShoot = true;
+	//flag that determines if player can shoot or if gun is on cooldown -- Initially set to false bc player doesnt start with weapon.
+	//we call reset function on pickup gun.
+	bool bCanShoot = false;
 
 	//flag that determines if player is sprinting
 	bool bIsSprinting = false;

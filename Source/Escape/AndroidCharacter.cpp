@@ -29,7 +29,7 @@ void AAndroidCharacter::BeginPlay()
 
 	AAndroidController* AndroidController = Cast<AAndroidController>(GetController());
 
-	if (AndroidController)
+	if (AndroidController && DefaultLocation)
 	{
 		AndroidController->SetDefaultLocation(DefaultLocation->GetActorLocation());
 	}
