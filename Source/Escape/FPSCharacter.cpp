@@ -217,16 +217,20 @@ AUsable* AFPSCharacter::TraceForUsable()
 	//Trace logistic variables, where we start, where we end
 	FVector StartTrace = FirstPersonCamera->GetComponentLocation();
 	FVector Direction = FirstPersonCamera->GetForwardVector();
-	FVector EndTrace = StartTrace + (Direction * 100); /*Mgiht want to change this literal value to a variable*/
+	FVector EndTrace = StartTrace + (Direction * 150); /*Mgiht want to change this literal value to a variable*/
 
 	//Set up the sphere shape we wil use to trace
 	FCollisionShape TraceSphere;
 	TraceSphere.ShapeType = ECollisionShape::Sphere;
-	TraceSphere.SetSphere(300);
+	TraceSphere.SetSphere(25);
 
 	//Set up the channel we are looking for. Usables have their own custom channel, refer to DefaultEngine.ini, but its ECC_GameTraceChannel1
 	FCollisionObjectQueryParams COQP;
 	COQP.AddObjectTypesToQuery(ECC_GameTraceChannel1);
+
+	FVector Center = ((EndTrace - StartTrace) / 2) + StartTrace;
+
+	DrawDebugSphere(GetWorld(), Center, TraceSphere.GetSphereRadius(), 100, FColor::Green);
 
 	//Test our trace
 	if (GetWorld()->SweepSingleByObjectType(Hit, StartTrace, EndTrace, FQuat::FQuat(), COQP,
