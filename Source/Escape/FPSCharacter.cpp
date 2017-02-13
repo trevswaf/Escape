@@ -230,7 +230,7 @@ AUsable* AFPSCharacter::TraceForUsable()
 
 	FVector Center = ((EndTrace - StartTrace) / 2) + StartTrace;
 
-	DrawDebugSphere(GetWorld(), Center, TraceSphere.GetSphereRadius(), 100, FColor::Green);
+	//DrawDebugSphere(GetWorld(), Center, TraceSphere.GetSphereRadius(), 100, FColor::Green);
 
 	//Test our trace
 	if (GetWorld()->SweepSingleByObjectType(Hit, StartTrace, EndTrace, FQuat::FQuat(), COQP,
