@@ -42,6 +42,8 @@ void AAndroidCharacter::Tick(float DeltaSeconds)
 		AAndroidController* Controller = Cast<AAndroidController>(GetController());
 		if (Controller)
 		{
+			UCharacterMovementComponent* tmp = GetCharacterMovement();
+			tmp->MaxWalkSpeed = WalkSpeed;
 			bSeenPlayer = false;
 			GLog->Log("Sight Lost");
 			Controller->SetSeenTarget(nullptr);
@@ -67,6 +69,8 @@ void AAndroidCharacter::OnSeePlayer(APawn* Pawn)
 
 	if (AndroidController)
 	{
+		UCharacterMovementComponent* tmp = GetCharacterMovement();
+		tmp->MaxWalkSpeed = RunSpeed;
 		GLog->Log("I see you");
 		bSeenPlayer = true;
 		LastSeenTime = GetWorld()->GetTimeSeconds();

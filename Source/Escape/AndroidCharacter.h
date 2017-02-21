@@ -30,6 +30,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	class UBehaviorTree* BehaviorTree;
 
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float WalkSpeed = 50;
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float RunSpeed = 250;
+
 	//time that clears player was sensed. MUST BE LARGER THAN SENSE INTERVAL
 	UPROPERTY (EditDefaultsOnly, Category = "AI")
 	float SeenThreshhold = 1.f;
