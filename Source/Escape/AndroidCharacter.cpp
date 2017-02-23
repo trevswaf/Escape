@@ -12,9 +12,13 @@ AAndroidCharacter::AAndroidCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//Set up Pawn Sensing
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
 
 	PawnSensingComponent->SetPeripheralVisionAngle(90.f);
+
+	//Randomize the run speed between 50 and 300 in increments of 50.
+	RunSpeed = FMath::RandRange(1, 6) * 50.f;
 }
 
 // Called when the game starts or when spawned
@@ -61,6 +65,16 @@ float AAndroidCharacter::TakeDamage(float DamageAmount, FDamageEvent const & Dam
 	}
 
 	return DamageAmount;
+}
+
+void AAndroidCharacter::InitDefaultLocation()
+{
+	AAndroidController* AndroidController = Cast<AAndroidController>(GetController());
+
+	if (AndroidController && DefaultLocation)
+	{
+		AndroidController->SetDefaultLocation(DefaultLocation->GetActorLocation());
+	}
 }
 
 void AAndroidCharacter::OnSeePlayer(APawn* Pawn)

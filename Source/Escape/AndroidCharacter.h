@@ -21,7 +21,7 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
 
-	UPROPERTY(EditAnywhere, Category = "AI")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "AI")
 	AActor* DefaultLocation;
 	
 	UPROPERTY(VisibleAnywhere, Category = "AI")
@@ -42,6 +42,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	float Health = 100;
+
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void InitDefaultLocation();
 
 private:
 
