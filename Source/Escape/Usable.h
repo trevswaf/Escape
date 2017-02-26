@@ -24,6 +24,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = Use)
 	void Use();
 
+	UPROPERTY(EditDefaultsOnly)
+	USceneComponent* Root;
+
 	//Optional Mesh
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* Mesh;
