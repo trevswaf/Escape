@@ -7,6 +7,8 @@
 #include "FPSCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUseDelegate, FString, Prompt);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChargeDelegate, float, ChargeTime);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FShootDelegate, bool, bCanShoot);
 
 UCLASS()
 class ESCAPE_API AFPSCharacter : public ACharacter
@@ -33,6 +35,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = Use)
 	FUseDelegate OnFoundUsable;
+
+	UPROPERTY(BlueprintAssignable, Category = Shooting)
+	FChargeDelegate OnChargeShot;
+
+	UPROPERTY(BlueprintAssignable, Category = Shooting)
+	FShootDelegate OnShoot;
 
 	// Sets default values for this character's properties
 	AFPSCharacter(const FObjectInitializer& ObjectInitializer);

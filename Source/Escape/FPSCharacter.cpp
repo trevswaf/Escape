@@ -51,6 +51,8 @@ void AFPSCharacter::Tick( float DeltaTime )
 		ChargeTime += DeltaTime;
 	}
 
+	OnChargeShot.Broadcast(ChargeTime);
+
 }
 
 // Called to bind functionality to input
@@ -186,6 +188,8 @@ void AFPSCharacter::Shoot()
 
 	//flag bCanShoot and register Timer to reset the flag based on ShotCooldown
 	bCanShoot = false;
+	OnShoot.Broadcast(false);
+
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AFPSCharacter::ResetShootCooldown, ShotCooldown, false);
 }
@@ -193,6 +197,7 @@ void AFPSCharacter::Shoot()
 void AFPSCharacter::ResetShootCooldown()
 {
 	bCanShoot = true;
+	OnShoot.Broadcast(true);
 }
 
 void AFPSCharacter::SetWalkSpeed()
