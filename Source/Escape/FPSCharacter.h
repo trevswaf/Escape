@@ -8,7 +8,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUseDelegate, FString, Prompt);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChargeDelegate, float, ChargeTime);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FShootDelegate, bool, bCanShoot);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FShootDelegate, bool, bCanShoot, float, Cooldown);
 
 UCLASS()
 class ESCAPE_API AFPSCharacter : public ACharacter
@@ -95,6 +95,13 @@ public:
 	UFUNCTION()
 	void UseUsable();
 
+protected:
+
+	//flag that determines if player can shoot or if gun is on cooldown -- Initially set to false bc player doesnt start with weapon.
+	//we call reset function on pickup gun.
+	UPROPERTY(BlueprintReadOnly, Category = "Shooting")
+	bool bCanShoot = false;
+
 private:
 
 	//amount of time shoot button has been held. used to get parameters for shot range/strength
@@ -111,10 +118,6 @@ private:
 
 	//power of shot - determined by type of shot fired
 	float ShotCooldown;
-
-	//flag that determines if player can shoot or if gun is on cooldown -- Initially set to false bc player doesnt start with weapon.
-	//we call reset function on pickup gun.
-	bool bCanShoot = false;
 
 	//flag that determines if player is sprinting
 	bool bIsSprinting = false;
