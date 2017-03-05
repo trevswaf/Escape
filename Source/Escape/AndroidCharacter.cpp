@@ -4,6 +4,7 @@
 #include "AndroidCharacter.h"
 #include "Perception/PawnSensingComponent.h"
 #include "AndroidController.h"
+#include "FPSCharacter.h"
 
 
 // Sets default values
@@ -16,6 +17,10 @@ AAndroidCharacter::AAndroidCharacter()
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
 
 	PawnSensingComponent->SetPeripheralVisionAngle(90.f);
+
+	DamageCollider = CreateDefaultSubobject<USphereComponent>(TEXT("DamageCollider"));
+	DamageCollider->SetCollisionObjectType(ECC_WorldDynamic);
+	DamageCollider->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 
 	//Randomize the run speed between 50 and 300 in increments of 50.
 	RunSpeed = FMath::RandRange(1, 6) * 50.f;
@@ -89,5 +94,22 @@ void AAndroidCharacter::OnSeePlayer(APawn* Pawn)
 		bSeenPlayer = true;
 		LastSeenTime = GetWorld()->GetTimeSeconds();
 		AndroidController->SetSeenTarget(Pawn);
+	}
+}
+
+void AAndroidCharacter::OnDamageOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("hit event"));
+	if ((OtherActor != nullptr) && (OtherActor != this))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("android hit something"));
+		AFPSCharacter* Player = Cast<AFPSCharacter>(OtherActor);
+		if (Player != nullptr)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("hit player"));
+			FDamageEvent DamageEvent;
+
+			Player->TakeDamage(MeleeDamage, DamageEvent, GetController(), this);
+		}
 	}
 }

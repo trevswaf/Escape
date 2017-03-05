@@ -75,6 +75,16 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Use", IE_Pressed, this, &AFPSCharacter::UseUsable);
 }
 
+float AFPSCharacter::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+	Health = FMath::Clamp(Health - DamageAmount, 0.f, 100.f);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::SanitizeFloat(Health));
+
+	OnDamaged.Broadcast(Health);
+
+	return DamageAmount;
+}
+
 //Called by player input to add forward motion to character
 void AFPSCharacter::MoveForward(float val)
 {

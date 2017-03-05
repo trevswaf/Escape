@@ -9,6 +9,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUseDelegate, FString, Prompt);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChargeDelegate, float, ChargeTime);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FShootDelegate, bool, bCanShoot, float, Cooldown);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDamageDelegate, float, Health);
 
 UCLASS()
 class ESCAPE_API AFPSCharacter : public ACharacter
@@ -42,6 +43,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = Shooting)
 	FShootDelegate OnShoot;
 
+	UPROPERTY(BlueprintAssignable, Category = Default)
+	FDamageDelegate OnDamaged;
+
 	// Sets default values for this character's properties
 	AFPSCharacter(const FObjectInitializer& ObjectInitializer);
 
@@ -53,6 +57,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
 
 	//Called to give player forward/backward movement. Bound in SetupPlayerInputComponent
 	UFUNCTION()
@@ -103,6 +109,8 @@ protected:
 	bool bCanShoot = false;
 
 private:
+
+	float Health = 100.f;
 
 	//amount of time shoot button has been held. used to get parameters for shot range/strength
 	float ChargeTime = 0.0f;

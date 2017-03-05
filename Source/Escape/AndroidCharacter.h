@@ -30,6 +30,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	class UBehaviorTree* BehaviorTree;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
+	USphereComponent* DamageCollider;
+
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float WalkSpeed = 50;
 
@@ -43,8 +46,14 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float Health = 100;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	float MeleeDamage = 12.5f;
+
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	void InitDefaultLocation();
+
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	void OnDamageOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 private:
 
