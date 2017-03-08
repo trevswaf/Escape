@@ -5,6 +5,8 @@
 #include "GameFramework/Character.h"
 #include "AndroidCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTakeDamageDelegate);
+
 UCLASS()
 class ESCAPE_API AAndroidCharacter : public ACharacter
 {
@@ -48,6 +50,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float MeleeDamage = 12.5f;
+
+	UPROPERTY(BlueprintAssignable, Category = "Damage")
+	FTakeDamageDelegate OnTakeDamage;
 
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	void InitDefaultLocation();

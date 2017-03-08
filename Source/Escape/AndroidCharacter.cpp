@@ -69,6 +69,8 @@ float AAndroidCharacter::TakeDamage(float DamageAmount, FDamageEvent const & Dam
 		SetLifeSpan(.1f);
 	}
 
+	OnTakeDamage.Broadcast();
+
 	return DamageAmount;
 }
 
