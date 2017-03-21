@@ -6,6 +6,7 @@
 #include "AndroidCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTakeDamageDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathDelegate);
 
 UCLASS()
 class ESCAPE_API AAndroidCharacter : public ACharacter
@@ -32,9 +33,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	class UBehaviorTree* BehaviorTree;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attack")
-	USphereComponent* DamageCollider;
-
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float WalkSpeed = 50;
 
@@ -51,8 +49,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float MeleeDamage = 12.5f;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Damage")
+	bool bCanDamage = true;
+
 	UPROPERTY(BlueprintAssignable, Category = "Damage")
 	FTakeDamageDelegate OnTakeDamage;
+
+	UPROPERTY(BlueprintAssignable, Category = "Damage")
+	FDeathDelegate OnDeath;
 
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	void InitDefaultLocation();

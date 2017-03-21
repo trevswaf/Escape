@@ -18,6 +18,11 @@ void AEscapeGameModeBase::SetQuestStage(EQuestStage Stage)
 	OnQuestStageSet.Broadcast(Stage);
 }
 
+EQuestStage AEscapeGameModeBase::GetQuestStage()
+{
+	return QuestStage;
+}
+
 
 
 

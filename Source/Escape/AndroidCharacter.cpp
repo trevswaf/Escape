@@ -18,10 +18,6 @@ AAndroidCharacter::AAndroidCharacter()
 
 	PawnSensingComponent->SetPeripheralVisionAngle(90.f);
 
-	DamageCollider = CreateDefaultSubobject<USphereComponent>(TEXT("DamageCollider"));
-	DamageCollider->SetCollisionObjectType(ECC_WorldDynamic);
-	DamageCollider->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-
 	//Randomize the run speed between 50 and 300 in increments of 50.
 	RunSpeed = FMath::RandRange(1, 6) * 50.f;
 }
@@ -46,6 +42,8 @@ void AAndroidCharacter::BeginPlay()
 
 void AAndroidCharacter::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
+
 	if ((GetWorld()->GetTimeSeconds() - SeenThreshhold) > LastSeenTime && bSeenPlayer)
 	{
 		AAndroidController* Controller = Cast<AAndroidController>(GetController());
@@ -67,6 +65,7 @@ float AAndroidCharacter::TakeDamage(float DamageAmount, FDamageEvent const & Dam
 	if (Health <= 0)
 	{
 		SetLifeSpan(.1f);
+		OnDeath.Broadcast();
 	}
 
 	OnTakeDamage.Broadcast();
@@ -101,10 +100,8 @@ void AAndroidCharacter::OnSeePlayer(APawn* Pawn)
 
 void AAndroidCharacter::OnDamageOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("hit event"));
 	if ((OtherActor != nullptr) && (OtherActor != this))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("android hit something"));
 		AFPSCharacter* Player = Cast<AFPSCharacter>(OtherActor);
 		if (Player != nullptr)
 		{
@@ -112,6 +109,8 @@ void AAndroidCharacter::OnDamageOverlap(UPrimitiveComponent * OverlappedComp, AA
 			FDamageEvent DamageEvent;
 
 			Player->TakeDamage(MeleeDamage, DamageEvent, GetController(), this);
+
+			bCanDamage = false;
 		}
 	}
 }

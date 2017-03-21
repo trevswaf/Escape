@@ -12,7 +12,11 @@ enum class EQuestStage : uint8
 	GrabGun,
 	DoorLocked,
 	AndroidEncounter,
-	GrabKey
+	GrabKey,
+	TurnOnPower,
+	PowerTurnedOn,
+	TransferData,
+	DataTransferred
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FQuestStageDelegate, EQuestStage, Stage);
@@ -28,6 +32,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Quest)
 	void SetQuestStage(EQuestStage Stage);
+
+	UFUNCTION(BlueprintCallable, Category = Quest)
+	EQuestStage GetQuestStage();
 
 	UPROPERTY(BlueprintAssignable, Category = Quest)
 	FQuestStageDelegate OnQuestStageSet;

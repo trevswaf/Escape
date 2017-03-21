@@ -31,6 +31,6 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* Mesh;
 
-	UPROPERTY(EditAnywhere, Category = Use)
+	UPROPERTY(BlueprintReadWrite,EditAnywhere, Category = Use)
 	FString Prompt = "Press F to Use";
 };
