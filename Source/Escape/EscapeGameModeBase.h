@@ -16,7 +16,8 @@ enum class EQuestStage : uint8
 	TurnOnPower,
 	PowerTurnedOn,
 	TransferData,
-	DataTransferred
+	DataTransferred,
+	Die
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FQuestStageDelegate, EQuestStage, Stage);

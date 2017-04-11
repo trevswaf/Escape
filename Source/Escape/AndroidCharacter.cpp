@@ -18,8 +18,8 @@ AAndroidCharacter::AAndroidCharacter()
 
 	PawnSensingComponent->SetPeripheralVisionAngle(90.f);
 
-	//Randomize the run speed between 50 and 300 in increments of 50.
-	RunSpeed = FMath::RandRange(1, 6) * 50.f;
+	//Randomize the run speed between 200 and 500 in increments of 50.
+	RunSpeed = FMath::RandRange(4, 10) * 50.f;
 }
 
 // Called when the game starts or when spawned

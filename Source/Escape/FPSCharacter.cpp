@@ -18,7 +18,7 @@ AFPSCharacter::AFPSCharacter(const FObjectInitializer& ObjectInitializer)
 	FirstPersonCamera->bUsePawnControlRotation = true;
 
 	UCharacterMovementComponent* CharMovement = GetCharacterMovement();
-	CharMovement->MaxWalkSpeed = 250;
+	CharMovement->MaxWalkSpeed = 350;
 }
 
 // Called when the game starts or when spawned
@@ -216,14 +216,14 @@ void AFPSCharacter::ResetShootCooldown()
 void AFPSCharacter::SetWalkSpeed()
 {
 	UCharacterMovementComponent* tmp = GetCharacterMovement();
-	tmp->MaxWalkSpeed = 250;
+	tmp->MaxWalkSpeed = 350;
 	bIsSprinting = false;
 }
 
 void AFPSCharacter::SetSprintSpeed()
 {
 	UCharacterMovementComponent* tmp = GetCharacterMovement();
-	tmp->MaxWalkSpeed = 375;
+	tmp->MaxWalkSpeed = 500;
 	bIsSprinting = true;
 }
 

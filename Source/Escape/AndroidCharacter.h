@@ -34,16 +34,16 @@ public:
 	class UBehaviorTree* BehaviorTree;
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float WalkSpeed = 50;
+	float WalkSpeed = 200;
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float RunSpeed = 250;
+	float RunSpeed = 500;
 
 	//time that clears player was sensed. MUST BE LARGER THAN SENSE INTERVAL
 	UPROPERTY (EditDefaultsOnly, Category = "AI")
 	float SeenThreshhold = 1.f;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, Category = "Health")
 	float Health = 100;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
