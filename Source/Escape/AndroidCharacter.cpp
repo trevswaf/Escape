@@ -64,7 +64,6 @@ float AAndroidCharacter::TakeDamage(float DamageAmount, FDamageEvent const & Dam
 
 	if (Health <= 0)
 	{
-		SetLifeSpan(.1f);
 		OnDeath.Broadcast();
 	}
 
