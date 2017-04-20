@@ -46,7 +46,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = Default)
 	FDamageDelegate OnDamaged;
 
-	UPROPERTY(BlueprintReadOnly, Category = Default)
+	UPROPERTY(BlueprintReadWrite, Category = Default)
 	float Health = 100.f;
 
 	// Sets default values for this character's properties
