@@ -46,6 +46,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = Default)
 	FDamageDelegate OnDamaged;
 
+	UPROPERTY(BlueprintReadOnly, Category = Default)
+	float Health = 100.f;
+
 	// Sets default values for this character's properties
 	AFPSCharacter(const FObjectInitializer& ObjectInitializer);
 
@@ -109,8 +112,6 @@ protected:
 	bool bCanShoot = false;
 
 private:
-
-	float Health = 100.f;
 
 	//amount of time shoot button has been held. used to get parameters for shot range/strength
 	float ChargeTime = 0.0f;
