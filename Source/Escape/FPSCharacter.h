@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 #include "FPSCharacter.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUseDelegate, FString, Prompt);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FUseDelegate, FString, Prompt, bool, bUsable);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChargeDelegate, float, ChargeTime);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FShootDelegate, bool, bCanShoot, float, Cooldown);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDamageDelegate, float, Health);

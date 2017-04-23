@@ -39,6 +39,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = Quest)
 	FQuestStageDelegate OnQuestStageSet;
+
+	UPROPERTY(BlueprintReadOnly, Category = UI)
+		bool bIsUsingGamepad = false;
 	
 private:
 	EQuestStage QuestStage;

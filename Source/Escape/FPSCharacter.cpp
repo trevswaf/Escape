@@ -38,11 +38,11 @@ void AFPSCharacter::Tick( float DeltaTime )
 
 	if (CurrentUsable)
 	{
-		OnFoundUsable.Broadcast(CurrentUsable->Prompt);
+		OnFoundUsable.Broadcast(CurrentUsable->Prompt, true);
 	}
 	else
 	{
-		OnFoundUsable.Broadcast(TEXT(""));
+		OnFoundUsable.Broadcast(TEXT(""), false);
 	}
 
 	//Tick Event that increments ChargeTime. Set true by ChargeShoot, and set false by Shoot.
