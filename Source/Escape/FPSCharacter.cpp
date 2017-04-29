@@ -77,7 +77,7 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 float AFPSCharacter::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
 {
-	if (Health < 0)
+	if (Health == 0)
 	{
 		return 0;
 	}
@@ -222,6 +222,7 @@ void AFPSCharacter::SetWalkSpeed()
 	UCharacterMovementComponent* tmp = GetCharacterMovement();
 	tmp->MaxWalkSpeed = 350;
 	bIsSprinting = false;
+	OnSprint.Broadcast(false);
 }
 
 void AFPSCharacter::SetSprintSpeed()
@@ -229,6 +230,7 @@ void AFPSCharacter::SetSprintSpeed()
 	UCharacterMovementComponent* tmp = GetCharacterMovement();
 	tmp->MaxWalkSpeed = 500;
 	bIsSprinting = true;
+	OnSprint.Broadcast(true);
 }
 
 AUsable* AFPSCharacter::TraceForUsable()

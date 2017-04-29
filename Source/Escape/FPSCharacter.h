@@ -10,6 +10,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FUseDelegate, FString, Prompt, bool
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChargeDelegate, float, ChargeTime);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FShootDelegate, bool, bCanShoot, float, Cooldown);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDamageDelegate, float, Health);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSprintDelegate, bool, bIsSprinting);
 
 UCLASS()
 class ESCAPE_API AFPSCharacter : public ACharacter
@@ -45,6 +46,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = Default)
 	FDamageDelegate OnDamaged;
+
+	UPROPERTY(BlueprintAssignable, Category = Default)
+	FSprintDelegate OnSprint;
 
 	UPROPERTY(BlueprintReadWrite, Category = Default)
 	float Health = 100.f;
