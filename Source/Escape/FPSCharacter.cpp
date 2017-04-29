@@ -77,7 +77,7 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 float AFPSCharacter::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
 {
-	if (Health <= 0)
+	if (Health < 0)
 	{
 		return 0;
 	}
