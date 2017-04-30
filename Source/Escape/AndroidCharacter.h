@@ -41,7 +41,7 @@ public:
 
 	//time that clears player was sensed. MUST BE LARGER THAN SENSE INTERVAL
 	UPROPERTY (EditDefaultsOnly, Category = "AI")
-	float SeenThreshhold = 1.f;
+	float SeenThreshhold = 100.f;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Health")
 	float Health = 100;
